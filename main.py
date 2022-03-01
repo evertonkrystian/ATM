@@ -1,5 +1,5 @@
 # ATM
-# This code is basic ATM implementation.
+# This code is a basic ATM implementation.
 # This made as a product of a Python course.
 
 
@@ -10,39 +10,6 @@ from builtins import input
 
 import getpass
 import os
-
-
-############### Functions ####################
-def cabecalho():
-    print('******************************************')
-    print('************ CAIXA ELETRÔNICO ************')
-    print('******************************************')
-
-def menu():
-    print('1 - Saldo')
-    print('2 - Saque')
-    if accounts_list[account_typed]['admin']:
-        print('10 - Incluir cédulas')
-    print('0 - Sair')
-
-# def checa_nova_opcao():
-#     new_option_typed = input('Deseja ralizar outra operação? 1 - Sim / 2 - Não')
-#     if new_option_typed == '1':
-#         limpar_tela()
-#         cabecalho()
-#         menu()
-#     elif new_option_typed == '2
-
-def limpar_tela():
-    # if os.name == 'nt':
-    #     os.system('cls') # Executa se Windows
-    # else:
-    #     os.system('clear') # Executa se Linux
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-def incluir_cedulas(qt_cedulas,valor_cedula):
-    amount_typed = input('Digite a quantidade de cédulas:')
-    money_bill_typed = input('Digite a cédula a ser incluída:')
 
 
 ############### Variables ####################
@@ -73,31 +40,20 @@ money_slips = {
     '100': 5,
 }
 
-############### Program ####################
-while True:
-    cabecalho()
-    account_typed = input('Digite sua conta: ')
-    print(account_typed)
-    password_typed = getpass.getpass('Digite sua senha: ')
-    print(password_typed)
+def main():
+    header()
+    account_auth = auth_acconut()
 
+    if account_auth:
+        clear_screen()
+        header()
 
-
-    if account_typed in accounts_list and password_typed == accounts_list[account_typed]['password']:
-        limpar_tela()
-        cabecalho()
-        menu()
-        option_typed = input('Escolha uma das opções acima: ')
+        option_typed = get_menu_option_typed(account_auth)
         if option_typed == '1':
-            #print('Seu saldo é :' + accounts_list[account_typed]['value'])
-            limpar_tela()
-            print('Seu saldo é : %s .' % accounts_list[account_typed]['value'])
-            #checa_nova_opcao()
-            input('Aperte <ENTER> para continuar.') #Pause do programa.
-            limpar_tela()
+            clear_screen()
+            print('Seu saldo é : %s .' % accounts_list[account_auth]['value'])
         elif option_typed == '2':
             value_typed = input('Digite o valor a ser sacado:')
-
             money_slips_user = {}
             value_typed_int = int(value_typed)
 
@@ -117,25 +73,74 @@ while True:
 
             if value_typed_int != 0:
                 print('O caixa não tem cédulas disponiveis para este valor')
-                input('Aperte <ENTER> para continuar.')  # Pause do programa.
             else:
                 for money_bill_typed in money_slips_user:
                     money_slips[money_bill_typed] -= money_slips_user[money_bill_typed]
                 print('Retire o seu dinheiro:')
                 print(money_slips_user)
-                input('Aperte <ENTER> para continuar.')  # Pause do programa.
 
-            
         elif option_typed == '10' and accounts_list[account_typed]['admin']:
             amout_typed = input('Digite a quantidade de cédulas: ')
             money_bill_typed = input('Digite a cédula a ser incluída: ')
-            #money_slips[money_bill_typed] = money_slips[money_bill_typed] + int(amout_typed)
             money_slips[money_bill_typed] += int(amout_typed)
             print(money_slips)
-            limpar_tela()
-        elif option_typed == '0':
-            continue
+            clear_screen()
+        # elif option_typed == '0':
+        #     continue
 
     else:
         print('Conta inválida')
-        input('Aperte <ENTER> para continuar.') #Pause do programa.
+
+
+
+def auth_acconut():
+    account_typed = input('Digite sua conta: ')
+    #print(account_typed)
+    password_typed = getpass.getpass('Digite sua senha: ')
+    #print(password_typed)
+
+    if account_typed in accounts_list and password_typed == accounts_list[account_typed]['password']:
+        return account_typed
+    else:
+        return False
+
+def header():
+    print('******************************************')
+    print('************ CAIXA ELETRÔNICO ************')
+    print('******************************************')
+
+def get_menu_option_typed(account_auth):
+    print('1 - Saldo')
+    print('2 - Saque')
+    if accounts_list[account_auth]['admin']:
+        print('10 - Incluir cédulas')
+    print('0 - Sair')
+    return input('Escolha uma das opções acima: ')
+
+# def checa_nova_opcao():
+#     new_option_typed = input('Deseja ralizar outra operação? 1 - Sim / 2 - Não')
+#     if new_option_typed == '1':
+#         clear_screen()
+#         header()
+#         get_menu_option_typed()
+#     elif new_option_typed == '2
+
+def clear_screen():
+    # if os.name == 'nt':
+    #     os.system('cls') # Executa se Windows
+    # else:
+    #     os.system('clear') # Executa se Linux
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def insert_ballots(qt_cedulas,valor_cedula): ############ A implementar
+    amount_typed = input('Digite a quantidade de cédulas:')
+    money_bill_typed = input('Digite a cédula a ser incluída:')
+
+
+
+
+
+while True:
+    main()
+    input('Aperte <ENTER> para continuar.')  # Pause do programa.
+    clear_screen()
