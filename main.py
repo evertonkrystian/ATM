@@ -2,17 +2,18 @@
 # This code is a basic ATM implementation.
 # This made as a product of a Python course.
 
-
-######## Problems to solve ###########
-#1 - debito em conta no saque.
-#2 - verificar saldo disponível.
 from builtins import input
 
 import getpass
 import os
 
+############# Challenges to implement #############
+#
+# 1 - Make withdraw value debit on account user
+# 2 - Make option to get out of program
+# 3 - Make a way to mantain a session
+# 4 - Turn method to calc banknotes e function
 
-############### Variables ####################
 accounts_list = {
         '0001-02': {
         'password':'123456',
@@ -47,57 +48,61 @@ def main():
     if account_auth:
         clear_screen()
         header()
-
         option_typed = get_menu_option_typed(account_auth)
-        if option_typed == '1':
-            clear_screen()
-            print('Seu saldo é : %s .' % accounts_list[account_auth]['value'])
-        elif option_typed == '2':
-            value_typed = input('Digite o valor a ser sacado:')
-            money_slips_user = {}
-            value_typed_int = int(value_typed)
-
-            if value_typed_int // 100 > 0 and value_typed_int // 100 <= money_slips['100']:
-                money_slips_user['100'] = value_typed_int // 100
-                value_typed_int = value_typed_int - value_typed_int // 100 * 100
-
-            if value_typed_int // 50 > 0 and value_typed_int // 50 <= money_slips['50']:
-                money_slips_user['50'] = value_typed_int // 50
-                value_typed_int = value_typed_int - value_typed_int // 50 * 50
-
-            if value_typed_int // 20 > 0 and value_typed_int // 20 <= money_slips['20']:
-                money_slips_user['20'] = value_typed_int // 20
-                value_typed_int = value_typed_int - value_typed_int // 20 * 20
-
-
-
-            if value_typed_int != 0:
-                print('O caixa não tem cédulas disponiveis para este valor')
-            else:
-                for money_bill_typed in money_slips_user:
-                    money_slips[money_bill_typed] -= money_slips_user[money_bill_typed]
-                print('Retire o seu dinheiro:')
-                print(money_slips_user)
-
-        elif option_typed == '10' and accounts_list[account_typed]['admin']:
-            amout_typed = input('Digite a quantidade de cédulas: ')
-            money_bill_typed = input('Digite a cédula a ser incluída: ')
-            money_slips[money_bill_typed] += int(amout_typed)
-            print(money_slips)
-            clear_screen()
-        # elif option_typed == '0':
-        #     continue
-
+        do_operation(option_typed, account_auth)
     else:
         print('Conta inválida')
 
 
+def do_operation(option_typed, account_auth):
+    if option_typed == '1':
+        show_balance(account_auth)
+    elif option_typed == '2':
+        withdraw()
+    elif option_typed == '10' and accounts_list[account_auth]['admin']:
+        insert_money_slips()
+    elif option_typed == '0':
+        pass
+
+
+def show_balance(account_auth):
+    print('Seu saldo é : %s .' % accounts_list[account_auth]['value'])
+
+def withdraw():
+    value_typed = input('Digite o valor a ser sacado:')
+    money_slips_user = {}
+    value_typed_int = int(value_typed)
+
+    if value_typed_int // 100 > 0 and value_typed_int // 100 <= money_slips['100']:
+        money_slips_user['100'] = value_typed_int // 100
+        value_typed_int = value_typed_int - value_typed_int // 100 * 100
+
+    if value_typed_int // 50 > 0 and value_typed_int // 50 <= money_slips['50']:
+        money_slips_user['50'] = value_typed_int // 50
+        value_typed_int = value_typed_int - value_typed_int // 50 * 50
+
+    if value_typed_int // 20 > 0 and value_typed_int // 20 <= money_slips['20']:
+        money_slips_user['20'] = value_typed_int // 20
+        value_typed_int = value_typed_int - value_typed_int // 20 * 20
+
+    if value_typed_int != 0:
+        print('O caixa não tem cédulas disponiveis para este valor')
+    else:
+        for money_bill_typed in money_slips_user:
+            money_slips[money_bill_typed] -= money_slips_user[money_bill_typed]
+        print('Retire o seu dinheiro:')
+        print(money_slips_user)
+
+def insert_money_slips():
+    amout_typed = input('Digite a quantidade de cédulas: ')
+    money_bill_typed = input('Digite a cédula a ser incluída: ')
+    money_slips[money_bill_typed] += int(amout_typed)
+    print(money_slips)
+    clear_screen()
 
 def auth_acconut():
     account_typed = input('Digite sua conta: ')
-    #print(account_typed)
     password_typed = getpass.getpass('Digite sua senha: ')
-    #print(password_typed)
 
     if account_typed in accounts_list and password_typed == accounts_list[account_typed]['password']:
         return account_typed
@@ -117,28 +122,12 @@ def get_menu_option_typed(account_auth):
     print('0 - Sair')
     return input('Escolha uma das opções acima: ')
 
-# def checa_nova_opcao():
-#     new_option_typed = input('Deseja ralizar outra operação? 1 - Sim / 2 - Não')
-#     if new_option_typed == '1':
-#         clear_screen()
-#         header()
-#         get_menu_option_typed()
-#     elif new_option_typed == '2
-
 def clear_screen():
     # if os.name == 'nt':
     #     os.system('cls') # Executa se Windows
     # else:
     #     os.system('clear') # Executa se Linux
     os.system('cls' if os.name == 'nt' else 'clear')
-
-def insert_ballots(qt_cedulas,valor_cedula): ############ A implementar
-    amount_typed = input('Digite a quantidade de cédulas:')
-    money_bill_typed = input('Digite a cédula a ser incluída:')
-
-
-
-
 
 while True:
     main()
