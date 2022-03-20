@@ -4,10 +4,10 @@
 
 ############# Challenges to implement #############
 #
-# 1 - Make withdraw value debit on account user
+# 1 - Make withdraw value debit on account user - Done
 # 2 - Make option to get out of program
 # 3 - Make a way to mantain a session
-# 4 - Turn method to calc banknotes e function
+# 4 - Turn method to calc banknotes in a function - Done
 
 import utils
 import operations
@@ -24,7 +24,8 @@ def main():
     else:
         print('Conta inválida')
 
-while True:
-    main()
-    input('Aperte <ENTER> para continuar.')  # Pause do programa.
-    utils.clear_screen()
+if __name__ == '__main__':
+    while True:
+        main()
+        input('Aperte <ENTER> para continuar.')  # Pause do programa.
+        utils.clear_screen()

@@ -1,6 +1,7 @@
 import bank_account_variables
 import utils
 import getpass
+from file import save_money_slips
 
 
 def do_operation(option_typed, account_auth):
@@ -38,6 +39,7 @@ def withdraw():
     else:
         for money_bill_typed in bank_account_variables.money_slips_user:
             bank_account_variables.money_slips[money_bill_typed] -= bank_account_variables.money_slips_user[money_bill_typed]
+        save_money_slips()
         print('Retire o seu dinheiro:')
         print(bank_account_variables.money_slips_user)
 
